@@ -62,8 +62,10 @@ class LangFuseDataTrace(BaseTraceInstance):
             self.dataset_retrieval_trace(trace_info)
         if isinstance(trace_info, ToolTraceInfo):
             self.tool_trace(trace_info)
+        # Skip generate_name_trace: auto-generated conversation names are internal
+        # housekeeping and should not appear as standalone traces in Langfuse.
         if isinstance(trace_info, GenerateNameTraceInfo):
-            self.generate_name_trace(trace_info)
+            return
 
     def workflow_trace(self, trace_info: WorkflowTraceInfo):
         trace_id = trace_info.trace_id or trace_info.workflow_run_id
