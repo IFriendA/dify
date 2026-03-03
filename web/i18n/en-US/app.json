@@ -233,6 +233,8 @@
   "tracing.configProvider.publicKey": "Public Key",
   "tracing.configProvider.removeConfirmContent": "The current configuration is in use, removing it will turn off the Tracing feature.",
   "tracing.configProvider.removeConfirmTitle": "Remove {{key}} configuration?",
+  "tracing.configProvider.conversationIdEnabled": "Cross-workflow Session Tracing",
+  "tracing.configProvider.conversationIdEnabledTip": "When enabled, if the workflow start node contains a variable named conversation_id, conversationId, or session_id, it will be automatically passed to Langfuse as the session ID, enabling cross-workflow trace linking.",
   "tracing.configProvider.secretKey": "Secret Key",
   "tracing.configProvider.title": "Config ",
   "tracing.configProvider.trackingUri": "Tracking URI",

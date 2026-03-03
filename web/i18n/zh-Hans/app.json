@@ -233,6 +233,8 @@
   "tracing.configProvider.publicKey": "公钥",
   "tracing.configProvider.removeConfirmContent": "当前配置正在使用中，删除它将关闭追踪功能。",
   "tracing.configProvider.removeConfirmTitle": "删除 {{key}} 配置？",
+  "tracing.configProvider.conversationIdEnabled": "跨工作流链路追踪",
+  "tracing.configProvider.conversationIdEnabledTip": "开启后，当工作流开始节点中包含名为 conversation_id、conversationId 或 session_id 的变量时，将自动作为 Session ID 传递到 Langfuse，实现跨工作流的全链路追踪。",
   "tracing.configProvider.secretKey": "密钥",
   "tracing.configProvider.title": "配置 ",
   "tracing.configProvider.trackingUri": "跟踪 URI",

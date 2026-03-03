@@ -6,6 +6,8 @@ import * as React from 'react'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Button from '@/app/components/base/button'
+import Switch from '@/app/components/base/switch'
+import Tooltip from '@/app/components/base/tooltip'
 import Confirm from '@/app/components/base/confirm'
 import Divider from '@/app/components/base/divider'
 import { LinkExternal02 } from '@/app/components/base/icons/src/vender/line/general'
@@ -55,6 +57,7 @@ const langFuseConfigTemplate = {
   public_key: '',
   secret_key: '',
   host: '',
+  conversation_id_enabled: true,
 }
 
 const opikConfigTemplate = {
@@ -518,6 +521,27 @@ const ProviderConfigModal: FC<Props> = ({
                               onChange={handleConfigChange('host')}
                               placeholder="https://cloud.langfuse.com"
                             />
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-1">
+                                <span className="system-sm-semibold text-text-secondary">
+                                  {t(`${I18N_PREFIX}.conversationIdEnabled`, { ns: 'app' })}
+                                </span>
+                                <Tooltip
+                                  popupContent={t(`${I18N_PREFIX}.conversationIdEnabledTip`, { ns: 'app' })}
+                                  position="top"
+                                />
+                              </div>
+                              <Switch
+                                defaultValue={(config as LangFuseConfig).conversation_id_enabled ?? true}
+                                onChange={(value: boolean) => {
+                                  setConfig({
+                                    ...config,
+                                    conversation_id_enabled: value,
+                                  })
+                                }}
+                                size="l"
+                              />
+                            </div>
                           </>
                         )}
                         {type === TracingProvider.opik && (

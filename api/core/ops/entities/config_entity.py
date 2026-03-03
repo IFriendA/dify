@@ -96,11 +96,25 @@ class PhoenixConfig(BaseTracingConfig):
 class LangfuseConfig(BaseTracingConfig):
     """
     Model class for Langfuse tracing config.
+
+    When ``conversation_id_enabled`` is True (the default), the Langfuse trace
+    layer will attempt to read a ``conversation_id`` / ``conversationId`` /
+    ``session_id`` variable from workflow inputs and map it to the Langfuse
+    ``sessionId``, enabling cross-workflow session tracing.
     """
 
     public_key: str
     secret_key: str
     host: str = "https://api.langfuse.com"
+    conversation_id_enabled: bool = True
+
+    @field_validator("conversation_id_enabled", mode="before")
+    @classmethod
+    def coerce_conversation_id_enabled(cls, v: object) -> bool:
+        """Accept empty-string or None from legacy configs that lack this field."""
+        if v is None or v == "":
+            return True
+        return bool(v)
 
     @field_validator("host")
     @classmethod

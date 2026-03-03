@@ -34,6 +34,7 @@ export type LangFuseConfig = {
   public_key: string
   secret_key: string
   host: string
+  conversation_id_enabled?: boolean
 }
 
 export type OpikConfig = {

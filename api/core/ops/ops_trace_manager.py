@@ -50,7 +50,7 @@ class OpsTraceProviderConfigMap(collections.UserDict[str, dict[str, Any]]):
                 return {
                     "config_class": LangfuseConfig,
                     "secret_keys": ["public_key", "secret_key"],
-                    "other_keys": ["host", "project_key"],
+                    "other_keys": ["host", "project_key", "conversation_id_enabled"],
                     "trace_instance": LangFuseDataTrace,
                 }
 
@@ -264,7 +264,9 @@ class OpsTraceManager:
                 new_config[key] = obfuscated_token(decrypt_tracing_config[key])
 
         for key in other_keys:
-            new_config[key] = decrypt_tracing_config.get(key, "")
+            value = decrypt_tracing_config.get(key, "")
+            if value != "":
+                new_config[key] = value
         return config_class(**new_config).model_dump()
 
     @classmethod
