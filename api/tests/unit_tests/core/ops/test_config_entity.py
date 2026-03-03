@@ -151,9 +151,9 @@ class TestLangfuseConfig:
         assert config.host == "https://api.langfuse.com"
 
     def test_conversation_id_enabled_default(self):
-        """Test conversation_id_enabled defaults to True."""
+        """Test conversation_id_enabled defaults to False."""
         config = LangfuseConfig(public_key="public", secret_key="secret")
-        assert config.conversation_id_enabled is True
+        assert config.conversation_id_enabled is False
 
     def test_conversation_id_enabled_explicit_false(self):
         """Test conversation_id_enabled can be set to False."""
@@ -161,14 +161,14 @@ class TestLangfuseConfig:
         assert config.conversation_id_enabled is False
 
     def test_conversation_id_enabled_coerces_empty_string(self):
-        """Legacy configs may store empty string for missing fields; should coerce to default True."""
+        """Legacy configs may store empty string for missing fields; should coerce to default False."""
         config = LangfuseConfig(public_key="public", secret_key="secret", conversation_id_enabled="")
-        assert config.conversation_id_enabled is True
+        assert config.conversation_id_enabled is False
 
     def test_conversation_id_enabled_coerces_none(self):
-        """None should coerce to default True via the field validator."""
+        """None should coerce to default False via the field validator."""
         config = LangfuseConfig(public_key="public", secret_key="secret", conversation_id_enabled=None)
-        assert config.conversation_id_enabled is True
+        assert config.conversation_id_enabled is False
 
 
 class TestLangSmithConfig:

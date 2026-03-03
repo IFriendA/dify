@@ -57,7 +57,7 @@ const langFuseConfigTemplate = {
   public_key: '',
   secret_key: '',
   host: '',
-  conversation_id_enabled: true,
+  conversation_id_enabled: false,
 }
 
 const opikConfigTemplate = {
@@ -532,7 +532,7 @@ const ProviderConfigModal: FC<Props> = ({
                                 />
                               </div>
                               <Switch
-                                defaultValue={(config as LangFuseConfig).conversation_id_enabled ?? true}
+                                defaultValue={(config as LangFuseConfig).conversation_id_enabled ?? false}
                                 onChange={(value: boolean) => {
                                   setConfig({
                                     ...config,

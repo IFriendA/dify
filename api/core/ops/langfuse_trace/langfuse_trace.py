@@ -73,7 +73,7 @@ class LangFuseDataTrace(BaseTraceInstance):
         metadata["workflow_app_log_id"] = trace_info.workflow_app_log_id
 
         # When cross-workflow session tracing is enabled, read conversation_id from workflow inputs.
-        if getattr(self.langfuse_config, "conversation_id_enabled", True) and not trace_info.conversation_id:
+        if getattr(self.langfuse_config, "conversation_id_enabled", False) and not trace_info.conversation_id:
             inputs = trace_info.workflow_run_inputs or {}
             trace_info.conversation_id = (
                 inputs.get("conversation_id") or inputs.get("conversationId") or inputs.get("session_id")
