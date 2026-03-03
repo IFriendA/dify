@@ -57,6 +57,11 @@ class LangfuseTrace(BaseModel):
         description="The id of the trace can be set, defaults to a random id. Used to link traces to external systems "
         "or when creating a distributed trace. Traces are upserted on id.",
     )
+    timestamp: datetime | None = Field(
+        default=None,
+        description="The timestamp of the trace. Defaults to the current time if not provided. "
+        "Set to workflow start_time to ensure correct chronological ordering in session views.",
+    )
     name: str | None = Field(
         default=None,
         description="Identifier of the trace. Useful for sorting/filtering in the UI.",

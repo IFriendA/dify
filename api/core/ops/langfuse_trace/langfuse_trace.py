@@ -71,18 +71,35 @@ class LangFuseDataTrace(BaseTraceInstance):
         metadata = trace_info.metadata
         metadata["workflow_app_log_id"] = trace_info.workflow_app_log_id
 
+        # Query app name from DB for meaningful trace names and tags in Langfuse.
+        app_name = None
+        app_id = trace_info.metadata.get("app_id")
+        if app_id:
+            try:
+                from models.model import App
+
+                app_record = db.session.query(App.name).filter(App.id == app_id).first()
+                if app_record:
+                    app_name = app_record.name
+            except Exception:
+                logger.debug("Failed to get app name for langfuse trace", exc_info=True)
+
         if trace_info.message_id:
             trace_id = trace_info.trace_id or trace_info.message_id
-            name = TraceTaskName.MESSAGE_TRACE
+            name = app_name or TraceTaskName.MESSAGE_TRACE
+            message_tags = ["message", "workflow"]
+            if app_name:
+                message_tags.append(app_name)
             trace_data = LangfuseTrace(
                 id=trace_id,
                 user_id=user_id,
                 name=name,
+                timestamp=trace_info.start_time,
                 input=dict(trace_info.workflow_run_inputs),
                 output=dict(trace_info.workflow_run_outputs),
                 metadata=metadata,
                 session_id=trace_info.conversation_id,
-                tags=["message", "workflow"],
+                tags=message_tags,
                 version=trace_info.workflow_run_version,
             )
             self.add_trace(langfuse_trace_data=trace_data)
@@ -100,15 +117,19 @@ class LangFuseDataTrace(BaseTraceInstance):
             )
             self.add_span(langfuse_span_data=workflow_span_data)
         else:
+            workflow_tags = ["workflow"]
+            if app_name:
+                workflow_tags.append(app_name)
             trace_data = LangfuseTrace(
                 id=trace_id,
                 user_id=user_id,
-                name=TraceTaskName.WORKFLOW_TRACE,
+                name=app_name or TraceTaskName.WORKFLOW_TRACE,
+                timestamp=trace_info.start_time,
                 input=dict(trace_info.workflow_run_inputs),
                 output=dict(trace_info.workflow_run_outputs),
                 metadata=metadata,
                 session_id=trace_info.conversation_id,
-                tags=["workflow"],
+                tags=workflow_tags,
                 version=trace_info.workflow_run_version,
             )
             self.add_trace(langfuse_trace_data=trace_data)
